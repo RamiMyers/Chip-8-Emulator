@@ -29,16 +29,17 @@ class Screen {
     Chip8 *chip8;
     std::vector<std::string> debugLog;
 
-    void debugger();
-    void updateTextureData();
+    void MenuBar();
+    void Debugger();
+    void UpdateTextureData();
 
   public:
     GLFWwindow *window;
 
     Screen(const char *vsPath, const char *fsPath, Chip8 *chip8);
     ~Screen();
-    void draw();
-    void pushToLog(std::string entry);
+    void Draw();
+    void PushToLog(std::string entry);
 };
 
 #endif

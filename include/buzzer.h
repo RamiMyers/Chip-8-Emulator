@@ -17,8 +17,8 @@ class Buzzer {
   public:
     Buzzer();
     ~Buzzer();
-    void play();
-    void stop();
+    void Play();
+    void Stop();
 };
 
 #endif

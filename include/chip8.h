@@ -8,7 +8,7 @@
 #include "buzzer.h"
 
 #define MEMORY 4096
-#define DISPLAY_FREQUENCY (float)1 / 60
+#define DISPLAY_FREQUENCY (float)1 / 120
 #define LOG_WIDTH 50
 
 #define Byte unsigned char
@@ -25,7 +25,24 @@ class Chip8 {
     Byte key[16];
     Word I;
     Word opcode;
-    std::array<void (Chip8::*)(), 16> opcodeTable;
+    void (Chip8::*opcodeTable[16])() = {
+      &Chip8::op0xxx,
+      &Chip8::op1xxx,
+      &Chip8::op2xxx,
+      &Chip8::op3xxx,
+      &Chip8::op4xxx,
+      &Chip8::op5xxx,
+      &Chip8::op6xxx,
+      &Chip8::op7xxx,
+      &Chip8::op8xxx,
+      &Chip8::op9xxx,
+      &Chip8::opAxxx,
+      &Chip8::opBxxx,
+      &Chip8::opCxxx,
+      &Chip8::opDxxx,
+      &Chip8::opExxx,
+      &Chip8::opFxxx,
+    };
 
     // Display
     Byte display[DISPLAY_WIDTH * DISPLAY_HEIGHT];
@@ -49,10 +66,11 @@ class Chip8 {
     float lastTime, currentTime, elapsedTime, deltaTime;
 
     // Functions
-    void tick();
-    void emulateCycle();
-    void processInput();
-    void updateTimers();
+    void Reset();
+    void Tick();
+    void EmulateCycle();
+    void ProcessInput();
+    void UpdateTimers();
     void op0xxx();
     void op1xxx();
     void op2xxx();
@@ -75,12 +93,9 @@ class Chip8 {
 
   public:
     Chip8(Byte instructionFrequency, Byte debugFlag);
-    int loadROM(const char *romPath);
-    void startMainLoop();
+    ~Chip8();
+    int LoadROM(const char *romPath);
+    void StartMainLoop();
 };
-
-void chipStartMainLoop(Chip8 *chip8, unsigned instructionFrequency);
-void chipTick(Chip8 *chip8, int steps);
-void chipProcessInput(Chip8 *chip8);
 
 #endif
