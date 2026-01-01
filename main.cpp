@@ -5,10 +5,6 @@
 // External Libraries
 #include "chip8.h"
 
-// TODO: Finish Implementing opcode logs for 0xBxxx onwards
-// TODO: Attempt to debug current Chip8 issues with debugger
-// TODO: Implement delete functions for Chip8, Screen
-
 int main(int argc, char **argv) {
   // ROM Loader
   char rom[256] = "../roms/";

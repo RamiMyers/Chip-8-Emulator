@@ -11,6 +11,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "-std=c++20")
 set(CMAKE_BUILD_TYPE Debug)
 
+
 # Executable
 add_executable(${PROJECT_NAME} main.cpp)
 
@@ -20,17 +21,25 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/kcat/openal-soft.git
   GIT_TAG        1.24.3
 )
+
 # GLFW
 FetchContent_Declare(
   glfw
   GIT_REPOSITORY https://github.com/glfw/glfw.git
   GIT_TAG        3.4
 )
+
+# X11
+if (UNIX AND NOT APPLE)
+  find_package(X11 REQUIRED)
+  target_link_libraries(${PROJECT_NAME} PRIVATE X11::X11)
+endif()
+
 # imgui
 FetchContent_Declare(
   imgui
   GIT_REPOSITORY https://github.com/ocornut/imgui.git
-  GIT_TAG        docking
+  GIT_TAG        v1.91.9-docking
 )
 FetchContent_MakeAvailable(imgui)
 add_library(imgui 
@@ -42,7 +51,7 @@ add_library(imgui
   ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
-target_link_libraries(imgui PRIVATE glfw)
+target_link_libraries(imgui PUBLIC glfw)
 
 # Include all fetched libraries
 FetchContent_MakeAvailable(openal-soft glfw)
